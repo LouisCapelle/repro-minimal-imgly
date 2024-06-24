@@ -1,0 +1,87 @@
+
+// IMG.LY CONFIGURATION - REPOS - START
+buildscript {
+    repositories {
+        maven { url "https://artifactory.img.ly/artifactory/imgly" }
+    }
+    dependencies {
+        def kotlinVersion = findProperty('android.kotlinVersion') ?: "1.8.0"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}"
+        classpath 'ly.img.android.sdk:plugin:10.9.0'
+        classpath('com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin:1.8.0-1.0.9')
+    }
+}
+
+// IMG.LY CONFIGURATION - REPOS - END
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+
+// IMG.LY CONFIGURATION - SDK_VERSIONS - START
+//
+// THIS SECTION HAS BEEN REPLACED BY THE IMG.LY SDK. THE PREVIOUS STATE
+// CAN BE FOUND BELOW:
+//
+// IMG.LY - PREVIOUS CONTENT - START
+// ------------------
+//    ext {
+//        buildToolsVersion = findProperty('android.buildToolsVersion') ?: '34.0.0'
+//        minSdkVersion = Integer.parseInt(findProperty('android.minSdkVersion') ?: '23')
+//        compileSdkVersion = Integer.parseInt(findProperty('android.compileSdkVersion') ?: '34')
+//        targetSdkVersion = Integer.parseInt(findProperty('android.targetSdkVersion') ?: '34')
+//        kotlinVersion = findProperty('android.kotlinVersion') ?: '1.9.23'
+//
+//        ndkVersion = "26.1.10909125"
+//    }
+// ------------------
+// IMG.LY - PREVIOUS CONTENT - END
+    ext {
+        buildToolsVersion = findProperty('android.buildToolsVersion') ?: '34.0.0'
+        minSdkVersion = Integer.parseInt(findProperty('android.minSdkVersion') ?: '23')
+        compileSdkVersion = Integer.parseInt(findProperty('android.compileSdkVersion') ?: '34')
+        targetSdkVersion = Integer.parseInt(findProperty('android.targetSdkVersion') ?: '34')
+        kotlinVersion = findProperty('android.kotlinVersion') ?: '1.9.23'
+
+        ndkVersion = "26.1.10909125"
+    }
+// IMG.LY CONFIGURATION - SDK_VERSIONS - END
+
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath('com.android.tools.build:gradle')
+        classpath('com.facebook.react:react-native-gradle-plugin')
+        classpath('org.jetbrains.kotlin:kotlin-gradle-plugin')
+    }
+}
+
+apply plugin: "com.facebook.react.rootproject"
+
+allprojects {
+    repositories {
+        maven {
+            // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
+            url(new File(['node', '--print', "require.resolve('react-native/package.json')"].execute(null, rootDir).text.trim(), '../android'))
+        }
+        maven {
+            // Android JSC is installed from npm
+            url(new File(['node', '--print', "require.resolve('jsc-android/package.json', { paths: [require.resolve('react-native/package.json')] })"].execute(null, rootDir).text.trim(), '../dist'))
+        }
+
+        google()
+        mavenCentral()
+        maven { url 'https://www.jitpack.io' }
+    }
+}
+
+// IMG.LY CONFIGURATION - MAVEN - START
+
+allprojects {
+    repositories {
+        maven { url "https://artifactory.img.ly/artifactory/imgly" }
+    }
+}
+
+// IMG.LY CONFIGURATION - MAVEN - END
